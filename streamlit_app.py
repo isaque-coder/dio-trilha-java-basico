@@ -1,118 +1,104 @@
 import streamlit as st
 import time
+import random
 
-# Configuração da página e Estilo Customizado (CSS)
+# Configuração da página
 st.set_page_config(page_title="Isaque Maia - Engenharia", page_icon="⚡", layout="wide")
 
-# CSS para mudar cores, fontes e esconder o menu padrão da IA
+# CSS Customizado para um visual "Tech/Anime"
 st.markdown("""
     <style>
     .main { background-color: #0e1117; }
-    h1 { color: #00d4ff; font-family: 'Courier New', Courier, monospace; font-weight: bold; }
-    h2 { color: #ff8c00; }
-    .stButton>button { background-color: #00d4ff; color: black; border-radius: 10px; font-weight: bold; }
-    .stCheckbox { font-size: 20px; color: #ffffff; }
+    .title-isaque { color: #00d4ff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 42px; font-weight: bold; border-bottom: 2px solid #ff8c00; }
+    .stCheckbox { background-color: #1e2130; padding: 10px; border-radius: 5px; margin-bottom: 5px; }
     .anime-quote { 
-        padding: 15px; 
-        border-left: 5px solid #ff8c00; 
-        background-color: #1e2130; 
-        font-style: italic; 
-        color: #e0e0e0;
-        margin-bottom: 20px;
+        padding: 15px; border-left: 5px solid #00d4ff; background-color: #262730; 
+        font-style: italic; color: #ffffff; margin: 20px 0; border-radius: 0 10px 10px 0;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# TÍTULO PERSONALIZADO
-st.markdown("<h1>ISAQUE MAIA | CRONOGRAMA ⚡</h1>", unsafe_allow_html=True)
-st.subheader("Dashboard de Engenharia Elétrica")
+# TOPO PERSONALIZADO
+st.markdown(f'<div class="title-isaque">ISAQUE MAIA | CRONOGRAMA ⚡</div>', unsafe_allow_html=True)
+st.write(f"### Engenharia Elétrica - Foco: Prediais & Eletrônica")
 
 # --- BANCO DE FRASES DE ANIME ---
-import random
 frases_anime = [
-    " 'Se você não gosta do seu destino, não o aceite. Em vez disso, tenha a coragem de mudá-lo.' – Naruto Uzumaki",
-    " 'O mundo não é perfeito. Mas ele está lá para nós, fazendo o melhor que pode.' – Roy Mustang (FMA)",
-    " 'Pessoas que não podem jogar nada fora, nunca podem esperar mudar nada.' – Armin Arlert (Attack on Titan)",
-    " 'Trabalho duro é inútil para aqueles que não acreditam em si mesmos.' – Naruto Uzumaki",
-    " 'Não morra pelo seu estágio, viva por ele!' – Adaptado de Portgas D. Ace"
+    "⚡ 'Não importa o quão mundano seja o seu trabalho, fazê-lo com todo o seu coração mudará o mundo.' – Rock Lee",
+    "⚡ 'Se você não gosta do seu destino, tenha a coragem de mudá-lo.' – Naruto Uzumaki",
+    "⚡ 'O impossível não existe para quem tem força de vontade.' – Vegeta",
+    "⚡ 'Um mestre falhou mais vezes do que um iniciante sequer tentou.' – Koro-sensei",
+    "⚡ 'Pode haver muitas falhas, mas desistir não é uma opção.' – Asta (Black Clover)"
 ]
 
-# --- FUNÇÃO DE SOM (HTML5) ---
-def play_sound():
-    sound_html = """
-    <audio autoplay>
-      <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
-    </audio>
-    """
+# --- FUNÇÃO DE SOM ---
+def play_alarm():
+    # Som de sino/notificação
+    sound_html = '<audio autoplay><source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg"></audio>'
     st.components.v1.html(sound_html, height=0)
 
-# --- INICIALIZAÇÃO DO ESTADO ---
+# --- INICIALIZAÇÃO DOS DADOS ---
 if 'estudos' not in st.session_state:
     st.session_state.estudos = {
-        "Segunda": ["14:00-15:30: NBR 5410 (Prediais) 🔥", "19:30-21:00: Circuitos Eletrônicos 🔥"],
-        "Terça": ["10:30-12:00: Relatório de Lab 🔥", "19:30-21:00: Lista de Eletrônica"],
-        "Quarta": ["14:00-15:30: Dimensionamento de Cargas 🔥", "19:30-20:30: Revisão Teórica"],
-        "Quinta": ["19:30-20:30: Análise de Sinais (Lineares)"],
-        "Sexta": ["14:00-16:00: Projeto Eletrônica Analógica 🔥", "19:00-20:00: Normas Técnicas"],
-        "Sábado": ["14:30-16:00: Exercícios de Fixação 🔥", "16:30-17:30: Simulado Geral"],
-        "Domingo": ["Planejamento da Próxima Semana"]
+        "Segunda": ["Revisão Prediais (NBR 5410) 🔥", "Exercícios de Eletrônica Analógica"],
+        "Terça": ["Revisão Prática de Laboratório 🔥", "Lista de Sistemas Lineares"],
+        "Quarta": ["Dimensionamento e Cálculos Prediais 🔥", "Revisão Teórica Eletrônica"],
+        "Quinta": ["Estudo rápido de Sinais", "Foco em Estágio"],
+        "Sexta": ["Eletrônica Analógica (Projeto) 🔥🔥", "Prediais (Cálculo de Carga)"],
+        "Sábado": ["Simulado de Eletrônica", "Resumo de Prediais 🔥"],
+        "Domingo": ["Organização da Semana"]
     }
 
-# --- LAYOUT PRINCIPAL ---
+# --- LAYOUT ---
 col_grade, col_foco = st.columns([1, 1.2])
 
 with col_grade:
-    st.markdown("## 🏫 Grade Fixa")
-    # Tabela estilizada
+    st.markdown("## 🏫 Grade Fixa (Facul)")
     grade = {
         "SEG": "08-12h: Prediais | 16-18h: Eletrônica",
         "TER": "08-10h: Conservação | 14-18h: Lab",
         "QUA": "08-12h: Prediais | 16-18h: Eletrônica",
-        "QUI": "16:00 - 18:00: Sist. Lineares",
-        "SEX": "Foco no Estágio (Manhã)",
-        "SÁB": "Foco no Estágio (Manhã)"
+        "QUI": "16-18h: Sist. Lineares",
+        "SEX": "💼 ESTÁGIO (Manhã)",
+        "SÁB": "💼 ESTÁGIO (Manhã)"
     }
     for d, a in grade.items():
-        st.write(f"**{d}:** {a}")
+        st.info(f"**{d}**: {a}")
 
 with col_foco:
     st.markdown("## 🎯 Missões de Hoje")
-    dia = st.selectbox("Selecione o dia:", list(st.session_state.estudos.keys()))
+    dia_selecionado = st.selectbox("Escolha o dia:", list(st.session_state.estudos.keys()))
     
-    # Frase do dia
     st.markdown(f'<div class="anime-quote">{random.choice(frases_anime)}</div>', unsafe_allow_html=True)
-
-    for tarefa in st.session_state.estudos[dia]:
-        st.checkbox(tarefa, key=f"chk_{dia}_{tarefa}")
+    
+    for tarefa in st.session_state.estudos[dia_selecionado]:
+        st.checkbox(tarefa, key=f"task_{dia_selecionado}_{tarefa}")
 
 st.markdown("---")
 
-# --- POMODORO TIMER REAL ---
-st.markdown("## ⏳ Ciclo de Foco (Pomodoro)")
-col_timer, col_info = st.columns([1, 2])
+# --- POMODORO REAL ---
+st.markdown("## ⏳ Pomodoro Isaque (Foco Máximo)")
+c1, c2 = st.columns([1, 2])
 
-with col_timer:
-    tempo_minutos = st.number_input("Duração (min):", value=25)
-    if st.button("🚀 INICIAR CICLO"):
+with c1:
+    minutos = st.number_input("Minutos de estudo:", value=25)
+    if st.button("🚀 INICIAR FOCO"):
         progresso = st.progress(0)
-        status_text = st.empty()
-        
-        for i in range(tempo_minutos * 60):
+        tempo_total = minutos * 60
+        for i in range(tempo_total):
             time.sleep(1)
-            restante = (tempo_minutos * 60) - i
-            mins, segs = divmod(restante, 60)
-            status_text.text(f"Tempo restante: {mins:02d}:{segs:02d}")
-            progresso.progress((i + 1) / (tempo_minutos * 60))
-        
+            progresso.progress((i + 1) / tempo_total)
         st.balloons()
-        st.success("Ciclo Finalizado! Descanse 5 minutos.")
-        play_sound() # Toca o som ao acabar
+        play_alarm()
+        st.success("CICLO COMPLETO! Descanse 5 minutos.")
 
-with col_info:
-    st.info("💡 Dica de Engenharia: Durante o ciclo de 25 min, foque apenas em um diagrama ou cálculo. Sem celular!")
+with c2:
+    st.markdown("### 📝 Notas do Dia / Estágio")
+    st.text_area("Anote aqui dúvidas ou tarefas do estágio:", height=150, placeholder="Ex: Verificar disjuntores do quadro X...")
 
-# --- NOTAS ---
-st.sidebar.markdown(f"### 👤 Usuário: {st.user.email if hasattr(st, 'user') else 'Isaque Maia'}")
-st.sidebar.markdown("### 💼 Estágio (Editável)")
-estagio = st.sidebar.text_area("Notas do Estágio:", "Manhã: 08:00 às 12:00")
-st.sidebar.image("https://cdn-icons-png.flaticon.com/512/606/606548.png", width=100) # Ícone de Eng. Elétrica
+# --- SIDEBAR ---
+st.sidebar.markdown(f"### ⚡ Engenheiro: \n**Isaque Maia**")
+st.sidebar.write("---")
+st.sidebar.markdown("### 💼 Horário Estágio")
+st.sidebar.text_input("Status:", "08:00 - 12:00 (Ativo)")
+st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3067/3067451.png", width=80)
